@@ -1,4 +1,5 @@
 import peasy.PeasyCam;
+import nervoussystem.obj.*;
 
 PeasyCam cam;
 
@@ -19,6 +20,17 @@ void draw() {
   scale(1000, 1000, 1000);
   rotateX(radians(180));
   rotateY(radians(90));
+      
+  if(isRendering) {
+    beginRecord("nervoussystem.obj.OBJExport", "pod.obj"); 
+  }  
+  
   battlePod.draw();
+  
+  if (isRendering) {
+    endRecord();
+    isRendering = false;
+  }
+  
   popMatrix();
 }

@@ -1,0 +1,196 @@
+<html>
+<head>
+<title>Nervous System | Tools | OBJExport</title>
+<meta name="keywords" content="Nervous System, 3d printed jewelry, jewelry, 3dprint, 3dprinting, 3d printing, nervoussystem, Design, Generative, Generative Jewelry, Computational Design, Computation, Generative Design, Modern Jewelry, Plastic Jewelry, Rubber Jewelry, Steel Jewelry, Green Jewelry, Jessica Rosenkrantz, Jesse Louis-Rosenberg, biomimicry, bio design" />
+<meta name="description" content="Nervous System is a design studio that works at the intersection of science, art, and technology. We create using a novel process that employs computer simulation to generate designs and digital fabrication to realize products. Drawing inspiration from natural phenomena, we write computer programs mimicking processes and patterns found in nature and use those programs to create unique and affordable art, jewelry, and housewares.">
+<meta name="author" content="Nervous System, inc.">
+<meta name="copyright" content="This website and all of its content are the property of Nervous System unless otherwise specified. Licensed under the Creative Commons Non-commercial Share-Alike 3.0 license.">
+<meta name="resource-type" content="document">
+<meta name="robots" content="ALL">
+<meta name="distribution" content="Global">
+<meta name="rating" content="General">
+<meta name="language" content="English">
+<meta name="doc-type" content="Web Page">
+<meta name="doc-class" content="Published">
+<link href='http://fonts.googleapis.com/css?family=Electrolize' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+
+<body>
+	<div class="centeredDiv">
+	<div id="content" class="content">
+	  <div class="header">
+		  <div class="banner"><a href="/index.php"><img src="nervouslogo.jpg"></a></div>
+		
+
+      		
+<style type="text/css">
+ body, div, p {font-family:verdana,sans-serif;}
+  div.lib { color: black; background: white;font-size:12px;width:400px; padding-bottom:10px;float:left;font-family:verdana,sans-serif;}
+  span.title {font-size:14px;font-weight:bold;font-family:verdana,sans-serif;}
+  a.d {text-decoration:underline;}
+  a.d:hover {text-decoration:none;}
+  .main {font-size:14pt;}
+  span.function {color:#0000FF;}
+
+  pre {font-family:monospace;}
+  div {padding-bottom:10px;}
+</style>
+
+<div class="bod">
+<div class="lib" style="width:100%">
+				<span class="main">OBJExport</span>
+				<br>latest v0.2.3 03/16/2013
+			</div>
+	<div style="float:left;width:400px;background:white;padding-right:20px;">
+			
+			<div class="lib">
+				
+				<div><span class="title">GitHub</span><br>
+				<a href="https://github.com/nervoussystem/OBJExport">https://github.com/nervoussystem/OBJExport</a>
+				</div>
+				
+				<div><span class="title">Description</span><br>This is a library to export meshes from Processing as OBJ or X3D files.  
+				It can export color meshes with triangle and quad shaped faces as an OBJ or X3D with a PNG texture map.  
+				It can also export meshes with faces with an arbitrary number of sides (without color support).  The OBJExport library is used the same way the PDF library is used.
+				
+				<p>
+				OBJExport works with <span class="function">beginRecord()</span>, <span class="function">beginRaw()</span>, and <span class="function">createGraphics()</span>. The OBJ format and the exporter work with arbitrarily sided polygon, not just triangles. This allows for the versatility to export quad or hex based meshes not just triangles. If you require triangles but are drawing with polygons instead, you can use <span class="function">beginRaw()</span> to get the tesselated output of Processing rather than the original polygons.
+				</p>
+				<p>
+				The library also supports color mesh export creating a .png texture and a .mtl material file to go along with the obj. Color mode is not enabled by default.  Use <span class="function">setColor(true)</span> on the OBJExport object before <span class="function">beginDraw()</span> to turn on color export.
+				</p>
+				<p>
+				The library does not support stroke(), texture() or normal() in the export. If you're interested in that functionality, let me know or contribute!
+				</p>
+				<p>
+				Tested on Windows 7, Processing 2.0b8
+				</p>
+				</div>
+			</div>
+			<div class="lib"><span class="title">Warning</span><br>
+				This library is brand spanking new and probably has bugs! 
+			</div>
+			<div class="lib"><span class="title">Installation</span><br>
+				To install simply download the zip file, and extract the contents to your Processing libraries folder. Or you can use Add Library in the Processing IDE.
+			</div>
+<div class="lib"><span class="title">Basic Example</span>
+		<pre>import nervoussystem.obj.*;
+boolean record = false;
+
+void setup() {
+  size(400, 400,P3D);
+}
+
+void draw() {
+  if (record) {
+    beginRecord("nervoussystem.obj.OBJExport", "filename.obj"); 
+  }  
+  box(100,100,100);
+  if (record) {
+    endRecord();
+    record = false;
+  }
+}
+
+void mousePressed() {
+  record = true;
+}
+</pre>
+<br>
+<span class="title">Color Example</span>
+<pre>
+import nervoussystem.obj.*;
+
+boolean record = false;
+float noiseScale = .05;
+void setup() {
+  size(400,400,P3D);
+}
+
+void draw() {
+  background(255);
+  
+  if(record) {
+    //X3DExport x3d = (X3DExport) createGraphics(10,10,"nervoussystem.obj.X3DExport","colored.x3d");
+    OBJExport obj = (OBJExport) createGraphics(10,10,"nervoussystem.obj.OBJExport","colored.obj");
+    obj.setColor(true);
+    obj.beginDraw();
+    drawNoise(obj);
+    obj.endDraw();
+    obj.dispose();
+    record = false;
+  }
+  noStroke();
+  translate(width/2,height/2,-50);
+  rotateX(PI/6.0);
+  rotateZ(frameCount*PI/360.0);
+  translate(-100,-100,0);
+  scale(4);
+  drawNoise(this.g);
+}
+
+void drawNoise(PGraphics pg) {
+  pg.beginShape(TRIANGLES);
+  for(int i=0;i<50;i++) {
+    for(int j=0;j<50;j++) {
+      float z = noise(i*noiseScale,j*noiseScale);
+      pg.fill( lerpColor( color(255,0,0),color(0,0,255),z ));
+      pg.vertex(i,j,z*50);
+      z = noise((i+1)*noiseScale,j*noiseScale);
+      pg.fill( lerpColor( color(255,0,0),color(0,0,255),z ));
+      pg.vertex(i+1,j,z*50);
+      z = noise((i+1)*noiseScale,(j+1)*noiseScale);
+      pg.fill( lerpColor( color(255,0,0),color(0,0,255),z ));
+      pg.vertex(i+1,j+1,z*50);
+
+      z = noise((i+1)*noiseScale,(j+1)*noiseScale);
+      pg.fill( lerpColor( color(255,0,0),color(0,0,255),z ));
+      pg.vertex(i+1,j+1,z*50);
+      z = noise(i*noiseScale,(j+1)*noiseScale);
+      pg.fill( lerpColor( color(255,0,0),color(0,0,255),z ));
+      pg.vertex(i,j+1,z*50);
+      z = noise(i*noiseScale,j*noiseScale);
+      pg.fill( lerpColor( color(255,0,0),color(0,0,255),z ));
+      pg.vertex(i,j,z*50);
+    }
+  }
+  pg.endShape();  
+}
+void keyPressed()
+{
+  if (key == 'r') {
+    record = true;
+  }
+}
+</pre>
+</div>
+	
+<div class="lib">
+<span class="title">Author</span>
+<div>
+Jesse Louis-Rosenberg, Nervous System<br>
+jesse@n-e-r-v-o-u-s.com
+</div>
+</div>
+<div>
+<span class="title">Contributors</span>
+<div class="lib">
+<a href="http://formwerks.de">Michael Zoellner</a>
+</div>
+
+</div>	
+	</div>
+	<div width="400px" style="float:left;">
+			
+<div class="lib"><span class="title">Download</span><p>
+				<a class="d" href="OBJExport.zip">download OBJExport 0.2.3 in .zip format here</a>
+				<p>
+				<img style="width:500px" src = "OBJExport.jpg">
+			</div>
+	</div>	
+	</div><!--end bod-->	
+</div><!-- end content -->
+</body>
+</html>
