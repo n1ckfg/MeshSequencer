@@ -5,6 +5,9 @@ PeasyCam cam;
 
 MeshObj battlePod;
 
+String fileName = "pod";
+int fileCounter = 0;
+
 void setup() {
   size(640, 480, P3D);
   cam = new PeasyCam(this, 400);
@@ -21,16 +24,24 @@ void draw() {
   rotateX(radians(180));
   rotateY(radians(90));
       
-  if(isRendering) {
-    beginRecord("nervoussystem.obj.OBJExport", "pod.obj"); 
+  if(isRecording) {
+    beginRecord("nervoussystem.obj.OBJExport", "render/" + fileName + "_" + zeroPadding(fileCounter, 1000) + ".obj"); 
   }  
   
   battlePod.draw();
   
-  if (isRendering) {
+  if (isRecording) {
     endRecord();
-    isRendering = false;
+    fileCounter++;
+    isRecording = false;
   }
   
   popMatrix();
+  
+  surface.setTitle(""+frameRate);
+}
+
+String zeroPadding(int _val, int _maxVal){
+  String q = ""+_maxVal;
+  return nf(_val,q.length());
 }

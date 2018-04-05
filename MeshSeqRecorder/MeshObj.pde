@@ -75,6 +75,12 @@ class MeshObjChild {
     beginShape();
     for (int i=0; i<points.size(); i++) {
       PVector p = points.get(i);
+      if (isRecording) {
+        float spread = 0.01;
+        p.x += random(-spread, spread);
+        p.y += random(-spread, spread);
+        p.z += random(-spread, spread);
+      }
       vertex(p.x, p.y, p.z);
     }
     endShape();
