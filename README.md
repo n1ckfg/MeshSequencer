@@ -1,1 +1,1 @@
-<img src="./MeshSeqRenderer/data/example.gif"><img src="./MeshSeqRecorder/data/example.gif">
+<img src="./MeshSeqRenderer/data/example.gif">&nbsp;&nbsp;&nbsp;<img src="./MeshSeqRecorder/data/example.gif">
