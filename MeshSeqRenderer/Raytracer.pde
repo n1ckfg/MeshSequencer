@@ -35,11 +35,13 @@ void joonsSetup() {
 }
 
 void joonsBeginRender() {
+  playbackCounter = frameCounter;
+  
   jr.beginRecord(); //Make sure to include methods you want rendered.
-  //camera(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
-  //perspective(fov, aspect, zNear, zFar);
+  camera(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ);
+  perspective(fov, aspect, zNear, zFar);
 
-  jr.background(0, 255, 255); //background(gray), or (r, g, b), like Processing.
+  jr.background(0); //background(gray), or (r, g, b), like Processing.
   //jr.background("gi_instant"); //Global illumination, normal mode.
   jr.background("gi_ambient_occlusion"); //Global illumination, ambient occlusion mode.
 }
@@ -55,7 +57,7 @@ void joonsEndRender() {
   File f2 = new File(sketchPath(outDir));
   f2.mkdir();
   File f3 = new File(sketchPath(outPath));
-  f3.delete();
+  //f3.delete();
   File f4 = new File(sketchPath(tempPath));
   f4.delete();
     
@@ -64,7 +66,7 @@ void joonsEndRender() {
   
   f1.renameTo(f3);
   
-  if (isRendering && frameCounter<frameCounterMax) {
+  if (isRendering && frameCounter < frameCounterMax && playbackCounter < frameCounterMax - 1) {
     frameCounter++;
     jr.render();
   } else if (isRendering) {

@@ -63,7 +63,7 @@ class MeshObjChild {
     
     if (doFill) {
       fill(fillColor);
-      jr.fill(material, red(fillColor), green(fillColor), blue(fillColor));
+      //jr.fill(material, red(fillColor), green(fillColor), blue(fillColor));
     } else {
       noFill();
     }

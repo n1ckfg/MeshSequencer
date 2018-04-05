@@ -57,7 +57,10 @@ void countFrames(String usePath) {
       }
       println("FOUND " + imgNames.size() + " " + s);
       filesLoaded = true;
-    }
+      // ~ ~ ~ ~ ~
+      frameCounterMax = imgNames.size();
+      // ~ ~ ~ ~ ~     
+  }
 }
 
 void filesLoadedChecker() {

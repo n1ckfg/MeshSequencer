@@ -1,8 +1,4 @@
-import peasy.PeasyCam;
-
-PeasyCam cam;
-
-PShape[] objs;
+MeshObj[] objs;
 
 int playbackCounter = 0;
 float playbackFps = 12.0;
@@ -12,14 +8,13 @@ boolean isPlaying = false;
 
 void setup() {
   size(800, 600, P3D);
-  cam = new PeasyCam(this, 400);
 
   fileSetup();
   joonsSetup();
   
-  objs = new PShape[imgNames.size()];
+  objs = new MeshObj[imgNames.size()];
   for(int i=0; i<objs.length; i++) {
-    objs[i] = loadShape(""+imgNames.get(i));
+    objs[i] = new MeshObj(loadShape(""+imgNames.get(i)));
   }
   
   playbackFps = 1.0/playbackFps;
@@ -30,12 +25,19 @@ void draw() {
   joonsBeginRender();
   
   pushMatrix();
-  translate(width/2, height/2, -500);
-  scale(1000, 1000, 1000);
+  translate(-40, -100, -140);
+  jr.fill("light", 0, 5, 0);
+  sphere(20);
+  popMatrix();
+  
+  pushMatrix();
+  translate((width/2) - 200, (height/2) - 300, -1500);
+  scale(800, 800, 800);
   rotateX(radians(180));
   rotateY(radians(90));
 
-  shape(objs[playbackCounter], 0, 0);
+  jr.fill("shiny", 50, 255, 255);
+  objs[playbackCounter].draw();
   
   popMatrix();
   joonsEndRender();
