@@ -1,6 +1,9 @@
 import peasy.PeasyCam;
 import nervoussystem.obj.*;
 
+boolean alwaysOn = true;
+int fps = 12;
+
 PeasyCam cam;
 
 MeshObj battlePod;
@@ -10,8 +13,11 @@ int fileCounter = 0;
 
 void setup() {
   size(640, 480, P3D);
+  if (alwaysOn) frameRate(fps);
   cam = new PeasyCam(this, 400);
   battlePod = new MeshObj(loadShape("battle_pod_tri.obj"));
+  
+  if (alwaysOn) isRecording = true;
 }
 
 void draw() {
@@ -33,7 +39,7 @@ void draw() {
   if (isRecording) {
     endRecord();
     fileCounter++;
-    isRecording = false;
+    if (!alwaysOn) isRecording = false;
   }
   
   popMatrix();
