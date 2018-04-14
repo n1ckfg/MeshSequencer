@@ -1,17 +1,20 @@
 String fileName = "test.ply"; // obj or ply
 String rgbFilename = "rgb.png";
 String depthFilename = "depth.png";
-PShape result; // note this only works with obj
-boolean viewResult = false;
+MeshImg result;
+boolean viewResult = true;
+PImage rgb, depth;
 
 void setup() {
   size(800, 600, P3D);
-  exportObj(fileName, loadImage(depthFilename), loadImage(rgbFilename));
+  rgb = loadImage(rgbFilename);
+  depth = loadImage(depthFilename);
+  exportObj(fileName, depth, rgb);
   
   if (viewResult) {
     cam = new PeasyCam(this, 400);
     println("Loading result...");
-    result = loadShape(fileName);
+    result = new MeshImg(depth);
   } else {
     exit();
   }
@@ -31,7 +34,7 @@ void draw() {
   rotateX(radians(180));
   rotateY(radians(90));
   
-  shape(result, 0, 0);
+  shape(result.shape, 0, 0);
   
   popMatrix();
   
