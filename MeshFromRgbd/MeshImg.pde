@@ -1,39 +1,42 @@
 class MeshImg {
   
   PImage depth, rgb;
-  int downRes = 2;
-  color[] depthPixels;
-  PShape shape;
-  
+  int downRes = 3;
+  ArrayList<PVector> points;
+
   MeshImg(PImage _depth) {
     depth = _depth;
-    depthPixels = new color[int(depth.pixels.length/downRes)];
+    initDepth();
   }
   
   MeshImg(PImage _depth, PImage _rgb) {
     depth = _depth;
     rgb = _rgb;
-    depthPixels = new color[int(depth.pixels.length/downRes)];
+    initDepth();
   }
   
   void initDepth() {
+    points = new ArrayList<PVector>();
     depth.loadPixels();
-    for (int i=0; i<depth.pixels.length; i+= downRes) {
-      depthPixels[int(i/downRes)] = depth.pixels[i];
-    }
     
-    int counter = 0;
-    // TODO fix method with meshobj
-    shape.beginShape();
-    for (int y=0; y<int(depth.height/downRes); y++) {
-      for (int x = 0; x<int(depth.width/downRes); x++) {
-        int loc = x + y * int(depth.width/downRes);
-        shape.setVertex(counter++, new PVector(x, y, depthPixels[loc]));
+    for (int y=0; y<depth.height; y+=downRes) {
+      for (int x=0; x<depth.width; x+=downRes) {
+        int loc = x + y * depth.width;
+        float xf = (float) x / (float) depth.width;
+        float yf = (float) y / (float) depth.height;
+        float zf = (float) depth.pixels[loc] / 255.0;
+        points.add(new PVector(xf, yf, zf));
       }
     }
-    shape.endShape();
-    
-    shape.setTexture(rgb);
   }
 
+  void draw() {
+    beginShape();
+    for (int i=0; i<points.size(); i++) {
+      PVector p = points.get(i);
+      vertex(p.x, p.y, p.z);
+    }
+    endShape();
+    //setTexture(rgb);
+  }
 }

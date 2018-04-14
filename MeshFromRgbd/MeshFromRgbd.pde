@@ -2,7 +2,7 @@ String fileName = "test.ply"; // obj or ply
 String rgbFilename = "rgb.png";
 String depthFilename = "depth.png";
 MeshImg result;
-boolean viewResult = true;
+boolean viewResult = false;
 PImage rgb, depth;
 
 void setup() {
@@ -29,12 +29,14 @@ void draw() {
   lights();
   
   pushMatrix();
-  translate(width/2, height/2, -500);
+  translate(width/2, height/2, 0);
   scale(1,1,1);
   rotateX(radians(180));
   rotateY(radians(90));
-  
-  shape(result.shape, 0, 0);
+  fill(255,0,0);
+  stroke(255);
+  strokeWeight(10);
+  result.draw();
   
   popMatrix();
   
