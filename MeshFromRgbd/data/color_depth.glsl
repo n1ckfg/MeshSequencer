@@ -51,12 +51,22 @@ vec3 xyz( float x, float y, float depth ) {
 	return vec3( ( x / 640.0 ) * z * fx, ( y / 480.0 ) * z * fy, - z );
 }
 
+float map(float val, float min1, float max1, float min2, float max2) {
+	float perc = (val - min1) / (max1 - min1);
+	return perc * (max2 - min2) + min2;
+}
+
 void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 	vec2 uv = fragCoord.xy / iResolution.xy;
 	vec2 uv2 = vec2(uv.x, abs(1.0 - uv.y));
 
 	vec3 hslCol = rgb2hsl(texture2D(tex0, uv2).xyz);
-	vec4 col = vec4(hslCol.x, hslColCol.x, hslCol.x, 1.0); 
+	float depth = 1.0 - hslCol.x;
+	float mask = hslCol.z;
+	float threshold = 0.04;
+	if (mask < threshold) depth = mask;
+	depth = map(depth, 32.0/255.0, 200.0/255.0, 0.0, 1.0);
+	vec4 col = vec4(depth, depth, depth, 1.0); 
 
 	fragColor = col;
 }
@@ -64,3 +74,4 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 void main() {
 	mainImage(gl_FragColor, gl_FragCoord.xy);
 }
+
