@@ -2,7 +2,7 @@ String depthFilename = "depth3.png";
 PImage depth;
 
 void setup() {
-  size(1280, 720, P2D);
+  size(640, 360, P2D);
   
   depth = loadImage(depthFilename);
   
@@ -12,4 +12,6 @@ void setup() {
 
 void draw() {
   filter(shader_c2d);
+  saveFrame("output.png");
+  exit();
 }

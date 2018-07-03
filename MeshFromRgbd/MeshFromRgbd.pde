@@ -3,8 +3,8 @@ import peasy.PeasyCam;
 PeasyCam cam;
 
 String fileName = "test.ply"; // obj or ply
-String rgbFilename = "rgb.png";
-String depthFilename = "depth3.png";
+String rgbFilename = "output-rgb.png";
+String depthFilename = "output-depth.png";
 MeshImg result;
 PImage rgb, depth;
 PShader d2c_shader, c2d_shader;
@@ -16,7 +16,7 @@ void setup() {
   rgb = loadImage(rgbFilename);
   depth = loadImage(depthFilename);
   
-  depth = get(0,0,width,height);
+  //depth = get(0,0,width,height);
   
   cam = new PeasyCam(this, 400);
   println("Loading result...");
