@@ -1,18 +1,15 @@
-PShader shader_d2c, shader_c2d;
+PShader shader_c2d;
 
 PVector shaderMousePos = new PVector(0,0);
 PVector shaderMouseClick = new PVector(0,0);
 
 void setupShaders() {
   shader_c2d = loadShader("color_depth.glsl"); 
-  shader_d2c = loadShader("depth_color.glsl"); 
   
   shaderSetSize(shader_c2d);
-  shaderSetSize(shader_d2c);
 }
 
 void updateShaders() {
-    shaderSetTexture(shader_d2c, "tex0", depth);
     shaderSetTexture(shader_c2d, "tex0", depth);
 }
 

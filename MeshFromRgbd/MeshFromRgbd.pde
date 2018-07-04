@@ -7,7 +7,7 @@ String rgbFilename = "output-rgb.png";
 String depthFilename = "output-depth.png";
 MeshImg result;
 PImage rgb, depth;
-PShader d2c_shader, c2d_shader;
+PShader c2d_shader;
 
 void setup() {
   size(1280, 720, P3D);
@@ -16,8 +16,10 @@ void setup() {
   rgb = loadImage(rgbFilename);
   depth = loadImage(depthFilename);
   
-  //depth = get(0,0,width,height);
-  
+  if (isColorDepth(depth)) {
+    //
+  }
+   
   cam = new PeasyCam(this, 400);
   println("Loading result...");
   result = new MeshImg(depth, rgb);
@@ -44,13 +46,23 @@ void draw() {
   surface.setTitle(""+frameRate);
 }
 
-PImage depthToColor(PImage img) {
-  PGraphics gfx = createGraphics(img.width, img.height, P2D);
-  gfx.beginDraw();
-  gfx.image(img, 0, 0);
-  gfx.filter(d2c_shader);
-  gfx.endDraw();
-  return gfx.get(0, 0, gfx.width, gfx.height);
+boolean isColorDepth(PImage img) {
+  int colorCount = 0;
+  img.loadPixels();
+  for (int i=0; i<10; i++) {
+    int x = (int) random(img.width);
+    int y = (int) random(img.height );
+    int loc = x + y * img.width;
+    color c = img.pixels[loc];
+    if (red(c) != green(c) && red(c) != blue(c)) colorCount++; 
+  }
+  if (colorCount>5) {
+    println("Found color depth image.");
+    return true;
+  } else {
+    println("Found grayscale depth image.");
+    return false;
+  }
 }
 
 PImage colorToDepth(PImage img) {
