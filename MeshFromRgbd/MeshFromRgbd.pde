@@ -4,7 +4,7 @@ PeasyCam cam;
 
 String fileName = "test.ply"; // obj or ply
 String rgbFilename = "output-rgb.png";
-String depthFilename = "output-depth-color.png";
+String depthFilename = "output-depth.png";
 MeshImg result;
 PImage rgb, depth;
 PShader c2d_shader;
@@ -19,7 +19,7 @@ void setup() {
   updateShaders();
   
   if (isColorDepth(depth)) {  
-    PGraphics gfx = createGraphics(depth.width, depth.height, P3D);
+    PGraphics gfx = createGraphics(depth.width, depth.height, P2D);
     gfx.beginDraw();
     gfx.image(depth, 0, 0);
     gfx.filter(shader_c2d);
@@ -27,11 +27,18 @@ void setup() {
     depth = gfx.get(0, 0, gfx.width, gfx.height);
   }
   
+  if (doInpainting) {         
+    initMask();
+    processMask();
+    targetImg.save("depth_test.png");
+    depth = targetImg.get(0, 0, targetImg.width, targetImg.height);
+  }
+  
   cam = new PeasyCam(this, 400);
   println("Loading result...");
   result = new MeshImg(depth, rgb);
 
-  //exportObj(fileName, depth, rgb);
+  exportObj(fileName, depth, rgb);
 }
 
 void draw() {
