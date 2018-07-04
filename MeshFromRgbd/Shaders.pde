@@ -5,8 +5,12 @@ PVector shaderMouseClick = new PVector(0,0);
 
 void setupShaders() {
   shader_c2d = loadShader("color_depth.glsl"); 
-  
   shaderSetSize(shader_c2d);
+}
+
+void setupShaders(float w, float h) {
+  shader_c2d = loadShader("color_depth.glsl"); 
+  shaderSetSize(shader_c2d, w, h);
 }
 
 void updateShaders() {
@@ -25,6 +29,10 @@ void shaderSetVar(PShader ps, String name, float val) {
 
 void shaderSetSize(PShader ps) {
   ps.set("iResolution", float(width), float(height), 1.0);
+}
+
+void shaderSetSize(PShader ps, float w, float h) {
+  ps.set("iResolution", w, h, 1.0);
 }
 
 void shaderSetMouse(PShader ps) {
