@@ -3,8 +3,10 @@ import peasy.PeasyCam;
 PeasyCam cam;
 
 String fileName = "test.ply"; // obj or ply
-String rgbFilename = "output-rgb.png";
-String depthFilename = "output-depth.png";
+String rgbFilename = "eqr-rgb-small.jpg"; //output-rgb.png";
+String depthFilename = "eqr-depth-small.jpg"; //"output-depth.png";
+boolean isEqr = false;
+
 MeshImg result;
 PImage rgb, depth;
 PShader c2d_shader;
@@ -38,7 +40,7 @@ void setup() {
   println("Loading result...");
   result = new MeshImg(depth, rgb);
 
-  exportObj(fileName, depth, rgb);
+  exportObj(fileName, depth, rgb, isEqr);
 }
 
 void draw() {

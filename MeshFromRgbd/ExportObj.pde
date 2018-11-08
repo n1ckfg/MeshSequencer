@@ -5,7 +5,7 @@
 //String rgbFilename = "rgb.png";
 //String depthFilename = "depth.png";
 
-void exportObj(String fileName, PImage depth, PImage rgb) {
+void exportObj(String fileName, PImage depth, PImage rgb, boolean isEqr) {
   boolean vertexColors = true;
   boolean saveMtl = true;
   boolean calcNormals = true;
@@ -61,7 +61,12 @@ void exportObj(String fileName, PImage depth, PImage rgb) {
   for (int y = 0; y < depthHeight; y++) { // WRITE VERTICES
     for (int x = 0; x < depthWidth; x++) {
       int loc = y * depthWidth + x;
-      PVector r =  reproject(x, y, depth.pixels[loc]);
+      PVector r =  new PVector(0,0,0);
+      if (isEqr) {
+        r = reprojectEqr(x, y, depth.pixels[loc]);
+      } else {
+        r = reproject(x, y, depth.pixels[loc]);
+      }
       color c = rgb.pixels[loc];
       PVector col = getColor(c);
       
@@ -165,6 +170,22 @@ String toObjFaceIndex(int index) {
 
 PVector reproject(float x, float y, float z) {
   return new PVector(x, -y, z/8000);
+}
+
+float _Displacement;
+float _BaselineLength;
+float _SphericalAngle;
+float _FocalLength;
+float _Maximum;
+
+float getDepthSpherical(float d) {
+    return asin(_BaselineLength * sin(_SphericalAngle)) / asin(d);
+}
+        
+PVector reprojectEqr(float x, float y, float z) {
+  PVector returns = reproject(x, y, z);
+  //v.vertex.xyz = v.normal * clamp(getDepthSpherical(tex2Dlod(_MainTex, float4(v.texcoord.xy * float2(1, 0.5), 0, 0)).r), -_Maximum, 0) * _Displacement;
+  return returns;
 }
 
 PVector getColor(color c) {
