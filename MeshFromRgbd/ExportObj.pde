@@ -172,11 +172,11 @@ PVector reproject(float x, float y, float z) {
   return new PVector(x, -y, z/8000);
 }
 
-float _Displacement;
-float _BaselineLength;
-float _SphericalAngle;
-float _FocalLength;
-float _Maximum;
+float _Displacement = 20;
+float _BaselineLength = 180;
+float _SphericalAngle = 3.142;
+float _FocalLength = 90;
+float _Maximum = 33.65;
 
 float getDepthSpherical(float d) {
     return asin(_BaselineLength * sin(_SphericalAngle)) / asin(d);
@@ -184,7 +184,7 @@ float getDepthSpherical(float d) {
         
 PVector reprojectEqr(float x, float y, float z) {
   PVector returns = reproject(x, y, z);
-  //v.vertex.xyz = v.normal * clamp(getDepthSpherical(tex2Dlod(_MainTex, float4(v.texcoord.xy * float2(1, 0.5), 0, 0)).r), -_Maximum, 0) * _Displacement;
+  returns.mult(constrain(getDepthSpherical(returns.z), -_Maximum, 0) * _Displacement);
   return returns;
 }
 
