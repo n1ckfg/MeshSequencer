@@ -32,7 +32,7 @@ void setup() {
   if (doInpainting) {         
     initMask();
     processMask();
-    targetImg.save("depth_test.png");
+    targetImg.save("render/depth_test.png");
     depth = targetImg.get(0, 0, targetImg.width, targetImg.height);
   }
   

@@ -159,7 +159,7 @@ void exportObj(String fileName, PImage depth, PImage rgb, boolean isEqr) {
     if (calcFaces) objArray[11] += faceCounter;
   }
   
-  saveStrings(fileName + "." + fileType, objArray);
+  saveStrings("render/" + fileName + "." + fileType, objArray);
 
   println("Export finished.");
 }
