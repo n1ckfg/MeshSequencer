@@ -6,8 +6,69 @@
 //String depthFilename = "depth.png";
 
 void exportObjEqr(String fileName, PImage depth, PImage rgb) {
-  //
+  boolean calcFaces = false;
+  int vertexCounter = 0;
+  int faceCounter = 0;
+  
+  println("Exporting: " + fileName);
+  
+  VertSphere vertSphere = new VertSphere(rgb, depth, 1000);
+  
+  // OBJ FILE WRITE
+  ArrayList<String> obj = new ArrayList<String>();
+   
+  // The ply file header--be careful modifying it.
+  // Choose ply if you know you want to work only with vertex colors instead of textures.
+  obj.add("ply");
+  obj.add("format ascii 1.0");
+  obj.add("comment VCGLIB generated");
+  obj.add("element vertex "); // line 3, vertexCounter will be added here
+  obj.add("property float x");
+  obj.add("property float y");
+  obj.add("property float z");
+  obj.add("property uchar red");
+  obj.add("property uchar green");
+  obj.add("property uchar blue");
+  obj.add("property uchar alpha");
+  obj.add("element face "); // line 11, faceCounter will be added here
+  obj.add("property list uchar int vertex_indices");
+  obj.add("end_header");
+  
+  for (int i = 0; i < vertSphere.verts.size(); i++) { // WRITE VERTICES    
+      // ply vertices
+      Vert v = vertSphere.verts.get(i);
+      obj.add(v.co.x + " " + v.co.y + " " + v.co.z + " " + int(red(v.col)) + " " + int(green(v.col)) + " " + int(blue(v.col)) + " 255");
+      vertexCounter++;
+  }
+  
+  if (calcFaces) {
+    /*
+    for (int y = 0; y < depthHeight -1; y++) {//WRITE FACE INDEXES
+      for (int x = 0; x < depthWidth -1 ; x++) {
+        int b = y * depthWidth + x ;
+        int a = b + 1;
+        int c = (y + 1)* depthWidth + x ;
+        int d = c + 1 ;
+        
+        //ply faces
+        obj.add("3 " + a + " " + b + " " + c);            
+        obj.add("3 " + a + " " + c + " " + d);
+        faceCounter+= 2;          
+      }
+    }
+    */
+  }
+    
+  String[] objArray = obj.toArray(new String[obj.size()]);
+  objArray[3] += vertexCounter;
+  objArray[11] += faceCounter;
+  
+  saveStrings("render/" + fileName, objArray);
+
+  println("Export finished.");
 }
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  
 
 void exportObj(String fileName, PImage depth, PImage rgb) {
   boolean vertexColors = true;

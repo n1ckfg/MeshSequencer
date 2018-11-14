@@ -5,7 +5,7 @@ PeasyCam cam;
 String fileName = "test.ply"; // obj or ply
 String rgbFilename = "eqr-rgb-small.jpg"; //output-rgb.png";
 String depthFilename = "eqr-depth-small.jpg"; //"output-depth.png";
-boolean isEqr = false;
+boolean isEqr = true;
 
 MeshImg result;
 VertSphere resultEqr;
