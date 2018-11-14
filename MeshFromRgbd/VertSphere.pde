@@ -90,7 +90,7 @@ class VertSphere {
           
   PVector reprojectEqr(Vert v) {
     PVector returns = v.n.copy().mult(constrain(getDepthSpherical(red(v.depth)/255.0), -_Maximum, 0) * _Displacement);
-    return new PVector(returns.x, -returns.y, returns.z);
+    return new PVector(returns.x, returns.y, returns.z);
   }
 
 }
@@ -177,11 +177,11 @@ class Vert {
   }
   
   PVector getUv(PVector p) {
-    p = new PVector(p.z, 1.0 - p.y, p.x).normalize();
+    p = new PVector(p.z, p.y, p.x).normalize();
     float u = 0.5 + (atan2(p.x, p.z) / (2 * PI)); 
     float v = 0.5 - (asin(p.y) / PI);
 
-    return new PVector(0.5 - u, v);
+    return new PVector(0.5 + u, v);
   }
   
   PVector getXyz(float u, float v) {

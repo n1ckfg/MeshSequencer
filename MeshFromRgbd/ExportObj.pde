@@ -42,21 +42,38 @@ void exportObjEqr(String fileName, PImage depth, PImage rgb) {
   }
   
   if (calcFaces) {
-    /*
-    for (int y = 0; y < depthHeight -1; y++) {//WRITE FACE INDEXES
-      for (int x = 0; x < depthWidth -1 ; x++) {
-        int b = y * depthWidth + x ;
-        int a = b + 1;
-        int c = (y + 1)* depthWidth + x ;
-        int d = c + 1 ;
+    for (int x = 0; x < sphereDetail; x++) {//WRITE FACE INDEXES
+      int theta1 = int((x / sphereDetail) * PI);
+      int theta2 = int(((x + 1) / sphereDetail) * PI);
+      for (int y = 0; y < sphereDetail; y++) {
+        int phi1 = int((y / sphereDetail) * 2 * PI); // azimuth goes around 0 .. 2*PI
+        int phi2 = int(((y + 1) / sphereDetail) * 2 * PI);
         
-        //ply faces
-        obj.add("3 " + a + " " + b + " " + c);            
-        obj.add("3 " + a + " " + c + " " + d);
-        faceCounter+= 2;          
+        //int vertex1 = vertex on a sphere of radius r at spherical coords theta1, phi1
+        //int vertex2 = vertex on a sphere of radius r at spherical coords theta1, phi2
+        //int vertex3 = vertex on a sphere of radius r at spherical coords theta2, phi2
+        //int vertex4 = vertex on a sphere of radius r at spherical coords theta2, phi1
+        
+        int vertex2 = y * (sphereDetail * sphereDetail) + x;
+        int vertex1 = vertex2 + 1;
+        int vertex3 = (y + 1) * (sphereDetail * sphereDetail) + x;
+        int vertex4 = vertex3 + 1 ;
+        
+        // ply faces, facing out
+        if(x == 0) { // top cap
+          obj.add("3 " + vertex1 + " " + vertex3 + " " + vertex4); //t1p1, t2p2, t2p1
+          faceCounter++;          
+        } else if (x + 1 == sphereDetail) { //end cap
+          obj.add("3 " + vertex3 + " " + vertex1 + " " + vertex2) ; //t2p2, t1p1, t1p2
+          faceCounter++;          
+        } else {
+          // body, facing OUT:
+          obj.add("3 " + vertex1 + " " + vertex2 + " " + vertex4 ) ;
+          obj.add("3 " + vertex2 + " " + vertex3 + " " + vertex4 ) ;
+          faceCounter+= 2;          
+        }
       }
     }
-    */
   }
     
   String[] objArray = obj.toArray(new String[obj.size()]);

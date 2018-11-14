@@ -9,6 +9,7 @@ boolean isEqr = true;
 
 MeshImg result;
 VertSphere resultEqr;
+int sphereDetail = 100;
 PImage rgb, depth;
 PShader c2d_shader;
 
@@ -43,7 +44,7 @@ void setup() {
     result = new MeshImg(depth, rgb);
     exportObj(fileName, depth, rgb);
   } else {
-    resultEqr = new VertSphere(rgb, depth, 200);
+    resultEqr = new VertSphere(rgb, depth, sphereDetail);
     exportObjEqr(fileName, depth, rgb);
   }
 }
