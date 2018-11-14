@@ -5,7 +5,11 @@
 //String rgbFilename = "rgb.png";
 //String depthFilename = "depth.png";
 
-void exportObj(String fileName, PImage depth, PImage rgb, boolean isEqr) {
+void exportObjEqr(String fileName, PImage depth, PImage rgb) {
+  //
+}
+
+void exportObj(String fileName, PImage depth, PImage rgb) {
   boolean vertexColors = true;
   boolean saveMtl = true;
   boolean calcNormals = true;
@@ -62,11 +66,7 @@ void exportObj(String fileName, PImage depth, PImage rgb, boolean isEqr) {
     for (int x = 0; x < depthWidth; x++) {
       int loc = y * depthWidth + x;
       PVector r =  new PVector(0,0,0);
-      if (isEqr) {
-        r = reprojectEqr(x, y, depth.pixels[loc]);
-      } else {
-        r = reproject(x, y, depth.pixels[loc]);
-      }
+      r = reproject(x, y, depth.pixels[loc]);
       color c = rgb.pixels[loc];
       PVector col = getColor(c);
       
@@ -170,22 +170,6 @@ String toObjFaceIndex(int index) {
 
 PVector reproject(float x, float y, float z) {
   return new PVector(x, -y, z/8000);
-}
-
-float _Displacement = 20;
-float _BaselineLength = 180;
-float _SphericalAngle = 3.142;
-float _FocalLength = 90;
-float _Maximum = 33.65;
-
-float getDepthSpherical(float d) {
-    return asin(_BaselineLength * sin(_SphericalAngle)) / asin(d);
-}
-        
-PVector reprojectEqr(float x, float y, float z) {
-  PVector returns = reproject(x, y, z);
-  returns.mult(constrain(getDepthSpherical(returns.z), -_Maximum, 0) * _Displacement);
-  return returns;
 }
 
 PVector getColor(color c) {

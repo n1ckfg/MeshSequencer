@@ -12,23 +12,23 @@ class VertSphere {
   boolean drawSourceSphere = false;
  
   float _Displacement = 620;
-  float _BaselineLength = 180;
+  float _BaselineLength = 1800;
   float _SphericalAngle = 3.142;
-  float _Maximum = 30003.65;
+  float _Maximum = 303.65;
   
-  VertSphere() {
-    init();
+  VertSphere(PImage _rgb, PImage _depth) {
+    init(_rgb, _depth);
   }
   
-  VertSphere(int _detail) {
+  VertSphere(PImage _rgb, PImage _depth, int _detail) {
     detail = _detail;
-    init();
+    init(_rgb, _depth);
   }
   
-  void init() {
+  void init(PImage _rgb, PImage _depth) {
     sphereDetail(detail);
-    tex_rgb = loadImage("eqr-rgb-small.jpg");
-    tex_depth = loadImage("eqr-depth-small.jpg");
+    tex_rgb = _rgb;
+    tex_depth = _depth;
     tex_rgb.loadPixels();
     tex_depth.loadPixels();
     ps = createShape(SPHERE, radius);

@@ -8,54 +8,62 @@ String depthFilename = "eqr-depth-small.jpg"; //"output-depth.png";
 boolean isEqr = false;
 
 MeshImg result;
+VertSphere resultEqr;
 PImage rgb, depth;
 PShader c2d_shader;
 
 void setup() {
   size(1280, 720, P3D);
-  setupShaders(640, 480);
 
   rgb = loadImage(rgbFilename);
   depth = loadImage(depthFilename);
-     
-  updateShaders();
-  
-  if (isColorDepth(depth)) {  
-    PGraphics gfx = createGraphics(depth.width, depth.height, P2D);
-    gfx.beginDraw();
-    gfx.image(depth, 0, 0);
-    gfx.filter(shader_c2d);
-    gfx.endDraw();
-    depth = gfx.get(0, 0, gfx.width, gfx.height);
-  }
-  
-  if (doInpainting) {         
-    initMask();
-    processMask();
-    targetImg.save("render/depth_test.png");
-    depth = targetImg.get(0, 0, targetImg.width, targetImg.height);
-  }
-  
   cam = new PeasyCam(this, 400);
   println("Loading result...");
-  result = new MeshImg(depth, rgb);
+  
+  if (!isEqr) {
+    setupShaders(640, 480);   
+    updateShaders();
+  
+    if (isColorDepth(depth)) {  
+      PGraphics gfx = createGraphics(depth.width, depth.height, P2D);
+      gfx.beginDraw();
+      gfx.image(depth, 0, 0);
+      gfx.filter(shader_c2d);
+      gfx.endDraw();
+      depth = gfx.get(0, 0, gfx.width, gfx.height);
+    }
+    
+    if (doInpainting) {         
+      initMask();
+      processMask();
+      targetImg.save("render/depth_test.png");
+      depth = targetImg.get(0, 0, targetImg.width, targetImg.height);
+    }
 
-  exportObj(fileName, depth, rgb, isEqr);
+    result = new MeshImg(depth, rgb);
+    exportObj(fileName, depth, rgb);
+  } else {
+    resultEqr = new VertSphere(rgb, depth, 200);
+    exportObjEqr(fileName, depth, rgb);
+  }
 }
 
 void draw() {
   background(0, 0, 127);
   lights();
   pushMatrix();
-  translate(width/2, height/2, -500);
-  scale(1000,1000,1000);
-  rotateX(radians(180));
-  rotateY(radians(90));
-  fill(255,0,0);
-  stroke(255);
-  strokeWeight(10);
-  result.draw();
-  
+  if (!isEqr) {
+    translate(width/2, height/2, -500);
+    scale(1000,1000,1000);
+    rotateX(radians(180));
+    rotateY(radians(90));
+    fill(255,0,0);
+    stroke(255);
+    strokeWeight(10);
+    result.draw();
+  } else {
+    resultEqr.draw();
+  }
   popMatrix();
   
   surface.setTitle(""+frameRate);
