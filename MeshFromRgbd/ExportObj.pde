@@ -6,13 +6,15 @@
 //String depthFilename = "depth.png";
 
 void exportObjEqr(String fileName, PImage depth, PImage rgb) {
-  boolean calcFaces = false;
+  int detailExport = 1000;
+  boolean calcFaces = true;
+  
   int vertexCounter = 0;
   int faceCounter = 0;
   
   println("Exporting: " + fileName);
   
-  VertSphere vertSphere = new VertSphere(rgb, depth, 1000);
+  VertSphere vertSphere = new VertSphere(rgb, depth, detailExport);
   
   // OBJ FILE WRITE
   ArrayList<String> obj = new ArrayList<String>();
@@ -42,28 +44,18 @@ void exportObjEqr(String fileName, PImage depth, PImage rgb) {
   }
   
   if (calcFaces) {
-    for (int x = 0; x < sphereDetail; x++) {//WRITE FACE INDEXES
-      int theta1 = int((x / sphereDetail) * PI);
-      int theta2 = int(((x + 1) / sphereDetail) * PI);
-      for (int y = 0; y < sphereDetail; y++) {
-        int phi1 = int((y / sphereDetail) * 2 * PI); // azimuth goes around 0 .. 2*PI
-        int phi2 = int(((y + 1) / sphereDetail) * 2 * PI);
-        
-        //int vertex1 = vertex on a sphere of radius r at spherical coords theta1, phi1
-        //int vertex2 = vertex on a sphere of radius r at spherical coords theta1, phi2
-        //int vertex3 = vertex on a sphere of radius r at spherical coords theta2, phi2
-        //int vertex4 = vertex on a sphere of radius r at spherical coords theta2, phi1
-        
-        int vertex2 = y * (sphereDetail * sphereDetail) + x;
+    for (int x = 0; x < detailExport; x++) {//WRITE FACE INDEXES
+      for (int y = 0; y < detailExport; y++) {        
+        int vertex2 = y * detailExport + x ;
         int vertex1 = vertex2 + 1;
-        int vertex3 = (y + 1) * (sphereDetail * sphereDetail) + x;
+        int vertex3 = (y + 1)* detailExport + x ;
         int vertex4 = vertex3 + 1 ;
         
         // ply faces, facing out
         if(x == 0) { // top cap
           obj.add("3 " + vertex1 + " " + vertex3 + " " + vertex4); //t1p1, t2p2, t2p1
           faceCounter++;          
-        } else if (x + 1 == sphereDetail) { //end cap
+        } else if (x + 1 == detailExport) { //end cap
           obj.add("3 " + vertex3 + " " + vertex1 + " " + vertex2) ; //t2p2, t1p1, t1p2
           faceCounter++;          
         } else {
