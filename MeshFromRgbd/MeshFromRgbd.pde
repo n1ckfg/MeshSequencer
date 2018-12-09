@@ -2,9 +2,9 @@ import peasy.PeasyCam;
 
 PeasyCam cam;
 
-String fileName = "test.ply"; // obj or ply
-String rgbFilename = "eqr-rgb-small.jpg"; //output-rgb.png";
-String depthFilename = "eqr-depth-small.jpg"; //"output-depth.png";
+//String fileName = "test.ply"; // obj or ply
+//String rgbFilename = "eqr-rgb-small.jpg"; //output-rgb.png";
+//String depthFilename = "eqr-depth-small.jpg"; //"output-depth.png";
 boolean isEqr = true;
 
 MeshImg result;
@@ -15,9 +15,10 @@ PShader c2d_shader;
 
 void setup() {
   size(1280, 720, P3D);
-
-  rgb = loadImage(rgbFilename);
-  depth = loadImage(depthFilename);
+  fileSetup();
+  
+  rgb = img.get(0, 0, img.width, img.height/2); //loadImage(rgbFilename);
+  depth = img.get(0, img.height/2, img.width, img.height); //loadImage(depthFilename);
   cam = new PeasyCam(this, 400);
   println("Loading result...");
   
