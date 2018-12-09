@@ -6,7 +6,7 @@ String openFilePath = "render";
 String folderPath;
 File dataFolder;
 ArrayList imgNames;
-String fileName = "frame";
+String fileName = "frame.ply";
 boolean filesLoaded = false;
 //PImage img;
 //PGraphics targetImg;

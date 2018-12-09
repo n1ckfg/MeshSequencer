@@ -16,9 +16,9 @@ PShader c2d_shader;
 void setup() {
   size(1280, 720, P3D);
   fileSetup();
-  
+
   rgb = img.get(0, 0, img.width, img.height/2); //loadImage(rgbFilename);
-  depth = img.get(0, img.height/2, img.width, img.height); //loadImage(depthFilename);
+  depth = img.get(0, img.height/2, img.width, img.height/2); //loadImage(depthFilename);
   cam = new PeasyCam(this, 400);
   println("Loading result...");
   
@@ -45,6 +45,8 @@ void setup() {
     result = new MeshImg(depth, rgb);
     exportObj(fileName, depth, rgb);
   } else {
+    //rgb.save("rgb.png");
+    //depth.save("depth.png");
     resultEqr = new VertSphere(rgb, depth, detail);
     exportObjEqr(fileName, depth, rgb);
   }
