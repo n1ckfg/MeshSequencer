@@ -12,9 +12,11 @@ VertSphere resultEqr;
 int detail = 100;
 PImage rgb, depth;
 PShader c2d_shader;
+Settings settings;
 
 void setup() {
   size(1280, 720, P3D);
+  settings = new Settings("settings.txt");
   fileSetup();
   processResult();
 }
