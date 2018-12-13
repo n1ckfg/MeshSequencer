@@ -16,7 +16,10 @@ PShader c2d_shader;
 void setup() {
   size(1280, 720, P3D);
   fileSetup();
+  processResult();
+}
 
+void processResult() {
   rgb = img.get(0, 0, img.width, img.height/2); //loadImage(rgbFilename);
   depth = img.get(0, img.height/2, img.width, img.height/2); //loadImage(depthFilename);
   cam = new PeasyCam(this, 400);
@@ -69,6 +72,8 @@ void draw() {
     resultEqr.draw();
   }
   popMatrix();
+  
+  fileLoop();
   
   surface.setTitle(""+frameRate);
 }

@@ -6,7 +6,7 @@ String openFilePath = "render";
 String folderPath;
 File dataFolder;
 ArrayList imgNames;
-String fileName = "frame.ply";
+String fileName = "frame";
 boolean filesLoaded = false;
 //PImage img;
 //PGraphics targetImg;
@@ -172,11 +172,12 @@ void fileFirstRun() {
 void fileLoop() {
   //if (updateScreen) image(targetImg,0,0);
   if (counter<imgNames.size()-1) {
-    saveGraphics(targetImg, false); //don't exit
+    processResult();//saveGraphics(targetImg, false); //don't exit
     counter++;
     nextImage(counter);
     prepGraphics();
   } else {
-    saveGraphics(targetImg, true); //exit
+    processResult(); //saveGraphics(targetImg, true); //exit
+    exit();
   }
 }

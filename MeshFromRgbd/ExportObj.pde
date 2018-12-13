@@ -72,7 +72,8 @@ void exportObjEqr(String fileName, PImage depth, PImage rgb) {
   objArray[3] += vertexCounter;
   objArray[11] += faceCounter;
   
-  saveStrings("render/" + fileName, objArray);
+  String savePath = "render/" + fileName + "_" + zeroPadding(counter+1,imgNames.size()) + ".ply";
+  saveStrings(savePath, objArray);
 
   println("Export finished.");
 }
@@ -205,7 +206,9 @@ void exportObj(String fileName, PImage depth, PImage rgb) {
       }
     }
   }
-    
+  
+  String fileNameRoot = "render/" + fileName + "_" + zeroPadding(counter+1,imgNames.size());
+  
   if (!exportPly) {
     if (saveMtl) {
       // MTL FILE WRITE
@@ -218,8 +221,8 @@ void exportObj(String fileName, PImage depth, PImage rgb) {
       mtl.add("illum 0");
       mtl.add("map_Kd " + fileName + ".png");
       
-      rgb.save(fileName + ".png");
-      saveStrings(fileName + ".mtl", mtl.toArray(new String[mtl.size()]));
+      rgb.save(fileNameRoot + ".png");
+      saveStrings(fileNameRoot + ".mtl", mtl.toArray(new String[mtl.size()]));
     }
   }
  
@@ -229,7 +232,8 @@ void exportObj(String fileName, PImage depth, PImage rgb) {
     if (calcFaces) objArray[11] += faceCounter;
   }
   
-  saveStrings("render/" + fileName + "." + fileType, objArray);
+  String savePath = fileNameRoot + "." + fileType;
+  saveStrings(savePath, objArray);
 
   println("Export finished.");
 }
