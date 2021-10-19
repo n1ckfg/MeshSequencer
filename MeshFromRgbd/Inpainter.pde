@@ -3,7 +3,7 @@ import org.opencv.photo.Photo;
 import org.opencv.imgproc.Imgproc;
 //import processing.opengl.PGraphics2D;
 
-boolean doInpainting = true;
+boolean doInpainting = false;
 int threshold = 5;
 boolean flipVertical = false;
 //PGraphics2D canvas;

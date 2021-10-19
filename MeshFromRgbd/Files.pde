@@ -66,13 +66,12 @@ void countFrames(String usePath) {
 }
 
 void filesLoadedChecker() {
-  // We need this because Processing 2, unlike Processing 1, will not automatically wait to let you pick a folder!
-  while(!filesLoaded){
-    try{
-      if(imgNames.size() > 0) img = loadImage((String) imgNames.get(0));
-    }catch(Exception e){ 
-      filesLoaded = false;
-    }
+  if (filesLoaded) {
+    nextImage(counter);
+    processResult();
+    prepGraphics();
+    surface.setSize(img.width, img.height);
+    firstRun = false;
   }
 }
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

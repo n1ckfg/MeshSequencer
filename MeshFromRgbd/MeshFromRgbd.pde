@@ -17,13 +17,12 @@ Settings settings;
 void setup() {
   size(1280, 720, P3D);
   settings = new Settings("settings.txt");
-  fileSetup();
-  processResult();
+  chooseFolderDialog();
 }
 
 void processResult() {
-  rgb = img.get(0, 0, img.width, img.height/2); //loadImage(rgbFilename);
-  depth = img.get(0, img.height/2, img.width, img.height/2); //loadImage(depthFilename);
+  rgb = img.get(img.width/2, 120, img.width, img.height-120); //loadImage(rgbFilename);
+  depth = img.get(0, 120, img.width/2, img.height-120); //loadImage(depthFilename);
   cam = new PeasyCam(this, 400);
   println("Loading result...");
   
@@ -48,34 +47,38 @@ void processResult() {
     }
 
     result = new MeshImg(depth, rgb);
-    exportObj(fileName, depth, rgb);
+    exportObj(fileName + ".obj", depth, rgb);
   } else {
     //rgb.save("rgb.png");
     //depth.save("depth.png");
     resultEqr = new VertSphere(rgb, depth, detail);
-    exportObjEqr(fileName, depth, rgb);
+    exportObjEqr(fileName + ".obj", depth, rgb);
   }
 }
 
 void draw() {
-  background(0, 0, 127);
-  lights();
-  pushMatrix();
-  if (!isEqr) {
-    translate(width/2, height/2, -500);
-    scale(1000,1000,1000);
-    rotateX(radians(180));
-    rotateY(radians(90));
-    fill(255,0,0);
-    stroke(255);
-    strokeWeight(10);
-    result.draw();
+  if (firstRun) {
+    filesLoadedChecker();
   } else {
-    resultEqr.draw();
+    background(0, 0, 127);
+    lights();
+    pushMatrix();
+    if (!isEqr) {
+      translate(width/2, height/2, -500);
+      scale(1000,1000,1000);
+      rotateX(radians(180));
+      rotateY(radians(90));
+      fill(255,0,0);
+      stroke(255);
+      strokeWeight(10);
+      result.draw();
+    } else {
+      resultEqr.draw();
+    }
+    popMatrix();
+    
+    fileLoop();
   }
-  popMatrix();
-  
-  fileLoop();
   
   surface.setTitle(""+frameRate);
 }
